@@ -1,0 +1,559 @@
+<?xml version="1.0" encoding="utf-8"?>
+<wsdl:definitions xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/" xmlns:tm="http://microsoft.com/wsdl/mime/textMatching/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:tns="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom" xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:s="http://www.w3.org/2001/XMLSchema" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/" xmlns:soap12="http://schemas.xmlsoap.org/wsdl/soap12/" targetNamespace="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">
+  <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Version 2.0.1.3 vom 15.09.2009</wsdl:documentation>
+  <wsdl:types>
+    <s:schema elementFormDefault="qualified" targetNamespace="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom">
+      <s:element name="BeginnTransaktion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="betriebsNummerBT" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="kontrollNummerBT" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="netznummerBT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="berichtsJahrBT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="leermeldungBT" type="s:boolean" />
+            <s:element minOccurs="1" maxOccurs="1" name="paketeGesamtBT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="anzahlUntGesamtBT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="anzahlUntInPaketBT" type="s:int" />
+            <s:element minOccurs="1" maxOccurs="1" name="tranArtBT" type="tns:TransBeginnArtEnum" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:simpleType name="TransBeginnArtEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="EchtDaten" />
+          <s:enumeration value="TestVerweigert" />
+          <s:enumeration value="TestGesperrt" />
+          <s:enumeration value="TestAusserBetrieb" />
+          <s:enumeration value="TestAkzeptiert" />
+          <s:enumeration value="TestNichtAkzeptiert" />
+          <s:enumeration value="TestFehler" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="BeginnTransaktionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="BeginnTransaktionResult" type="tns:BeginnTranAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="BeginnTranAntwort">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:TranAntwort">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Transaktionsnummer" type="s:string" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="TranAntwort">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="StatusWs" type="tns:TransStatusEnum" />
+          <s:element minOccurs="1" maxOccurs="1" name="MeldungsCode" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Meldung" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="TransStatusEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="NichtGesetzt" />
+          <s:enumeration value="Akzeptiert" />
+          <s:enumeration value="Verweigert" />
+          <s:enumeration value="Gesperrt" />
+          <s:enumeration value="AusserBetrieb" />
+          <s:enumeration value="TestTrans" />
+          <s:enumeration value="VorPruefungOK" />
+          <s:enumeration value="Fehler" />
+          <s:enumeration value="NichtAkzeptiert" />
+          <s:enumeration value="VorPruefungListe" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="TransEinmalig">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionsNummerTE" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="einmaligTE" type="tns:Einmalig" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="Einmalig">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_2" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_11_2" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_3" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_4" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_5" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_6" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_7" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_8" type="s:decimal" />
+          <s:element minOccurs="0" maxOccurs="1" name="VSU_1_11_1" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="VSU_1_9" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:element name="TransEinmaligResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransEinmaligResult" type="tns:TranAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="TransUnterbrechungen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionsNummerTU" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="paketAktuellTU" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="unterbrechungenTU" type="tns:ArrayOfUnterbrechung" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="ArrayOfUnterbrechung">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="Unterbrechung" nillable="true" type="tns:Unterbrechung" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="Unterbrechung">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LfdNr" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="Details" type="tns:ArrayOfUnterbrechungDetail" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_14" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_15" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_16" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_17" type="s:boolean" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_18" type="s:dateTime" />
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_19" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="Unterbrechungsart" type="tns:UnterbrechungsArtEnum" />
+          <s:element minOccurs="1" maxOccurs="1" name="StoerungsAnlass" type="tns:StoerungsAnlassEnum" />
+          <s:element minOccurs="0" maxOccurs="1" name="VSU_1_36" type="s:string" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="ArrayOfUnterbrechungDetail">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="UnterbrechungDetail" nillable="true" type="tns:UnterbrechungDetail" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="UnterbrechungDetail">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="VSU_1_13" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="NTrafo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="NTrafo_Produkt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="KTrafo" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="KTrafo_Produkt" type="s:decimal" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetzebeneID" type="tns:NetzebeneEnum" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="NetzebeneEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="NichtGesetzt" />
+          <s:enumeration value="NS" />
+          <s:enumeration value="MS" />
+          <s:enumeration value="HS" />
+          <s:enumeration value="HoeS" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="UnterbrechungsArtEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="NichtGesetzt" />
+          <s:enumeration value="G" />
+          <s:enumeration value="U" />
+        </s:restriction>
+      </s:simpleType>
+      <s:simpleType name="StoerungsAnlassEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="NichtGesetzt" />
+          <s:enumeration value="AE" />
+          <s:enumeration value="ED" />
+          <s:enumeration value="ZBN" />
+          <s:enumeration value="RWS" />
+          <s:enumeration value="HG" />
+          <s:enumeration value="ZW" />
+          <s:enumeration value="S" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="TransUnterbrechungenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="TransUnterbrechungenResult" type="tns:TranUnterbrAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="TranUnterbrAntwort">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:TranAntwort">
+            <s:sequence>
+              <s:element minOccurs="1" maxOccurs="1" name="AnzahlEmpfangen" type="s:int" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="AbschlussTransaktion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionsNummerTA" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AbschlussTransaktionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AbschlussTransaktionResult" type="tns:TranAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ErgebnisVorPruefung">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="1" maxOccurs="1" name="betriebsNummerEV" type="s:int" />
+            <s:element minOccurs="0" maxOccurs="1" name="kontrollNummerEV" type="s:string" />
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionsNummerEV" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="ErgebnisVorPruefungResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="ErgebnisVorPruefungResult" type="tns:VorPruefAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="VorPruefAntwort">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:TranAntwort">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Vorpruefliste" type="tns:ArrayOfDatenVorpruefEintrag" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:complexType name="ArrayOfDatenVorpruefEintrag">
+        <s:sequence>
+          <s:element minOccurs="0" maxOccurs="unbounded" name="DatenVorpruefEintrag" nillable="true" type="tns:DatenVorpruefEintrag" />
+        </s:sequence>
+      </s:complexType>
+      <s:complexType name="DatenVorpruefEintrag">
+        <s:sequence>
+          <s:element minOccurs="1" maxOccurs="1" name="LfdNr" type="s:int" />
+          <s:element minOccurs="1" maxOccurs="1" name="FehlerNummer" type="s:int" />
+          <s:element minOccurs="0" maxOccurs="1" name="FeldBezeichnung" type="s:string" />
+          <s:element minOccurs="0" maxOccurs="1" name="Beschreibung" type="s:string" />
+          <s:element minOccurs="1" maxOccurs="1" name="FehlerGruppe" type="tns:GruppeEnum" />
+          <s:element minOccurs="1" maxOccurs="1" name="NetzebeneID" type="tns:NetzebeneEnum" />
+        </s:sequence>
+      </s:complexType>
+      <s:simpleType name="GruppeEnum">
+        <s:restriction base="s:string">
+          <s:enumeration value="NichtGesetzt" />
+          <s:enumeration value="Unterbrechung" />
+          <s:enumeration value="Einmalig" />
+        </s:restriction>
+      </s:simpleType>
+      <s:element name="AbbruchTransaktion">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionsNummerTR" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="AbbruchTransaktionResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="AbbruchTransaktionResult" type="tns:TranAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RueckgabeEinmalig">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionNummerRE" type="s:string" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RueckgabeEinmaligResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RueckgabeEinmaligResult" type="tns:RueckEinmaligAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RueckEinmaligAntwort">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:TranAntwort">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="EinmalDaten" type="tns:Einmalig" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+      <s:element name="RueckgabeUnterbrechungen">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="transaktionNummerRU" type="s:string" />
+            <s:element minOccurs="1" maxOccurs="1" name="paketAktuellRU" type="s:int" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:element name="RueckgabeUnterbrechungenResponse">
+        <s:complexType>
+          <s:sequence>
+            <s:element minOccurs="0" maxOccurs="1" name="RueckgabeUnterbrechungenResult" type="tns:RueckUntbrAntwort" />
+          </s:sequence>
+        </s:complexType>
+      </s:element>
+      <s:complexType name="RueckUntbrAntwort">
+        <s:complexContent mixed="false">
+          <s:extension base="tns:TranAntwort">
+            <s:sequence>
+              <s:element minOccurs="0" maxOccurs="1" name="Unterbrechungen" type="tns:ArrayOfUnterbrechung" />
+            </s:sequence>
+          </s:extension>
+        </s:complexContent>
+      </s:complexType>
+    </s:schema>
+  </wsdl:types>
+  <wsdl:message name="BeginnTransaktionSoapIn">
+    <wsdl:part name="parameters" element="tns:BeginnTransaktion" />
+  </wsdl:message>
+  <wsdl:message name="BeginnTransaktionSoapOut">
+    <wsdl:part name="parameters" element="tns:BeginnTransaktionResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransEinmaligSoapIn">
+    <wsdl:part name="parameters" element="tns:TransEinmalig" />
+  </wsdl:message>
+  <wsdl:message name="TransEinmaligSoapOut">
+    <wsdl:part name="parameters" element="tns:TransEinmaligResponse" />
+  </wsdl:message>
+  <wsdl:message name="TransUnterbrechungenSoapIn">
+    <wsdl:part name="parameters" element="tns:TransUnterbrechungen" />
+  </wsdl:message>
+  <wsdl:message name="TransUnterbrechungenSoapOut">
+    <wsdl:part name="parameters" element="tns:TransUnterbrechungenResponse" />
+  </wsdl:message>
+  <wsdl:message name="AbschlussTransaktionSoapIn">
+    <wsdl:part name="parameters" element="tns:AbschlussTransaktion" />
+  </wsdl:message>
+  <wsdl:message name="AbschlussTransaktionSoapOut">
+    <wsdl:part name="parameters" element="tns:AbschlussTransaktionResponse" />
+  </wsdl:message>
+  <wsdl:message name="ErgebnisVorPruefungSoapIn">
+    <wsdl:part name="parameters" element="tns:ErgebnisVorPruefung" />
+  </wsdl:message>
+  <wsdl:message name="ErgebnisVorPruefungSoapOut">
+    <wsdl:part name="parameters" element="tns:ErgebnisVorPruefungResponse" />
+  </wsdl:message>
+  <wsdl:message name="AbbruchTransaktionSoapIn">
+    <wsdl:part name="parameters" element="tns:AbbruchTransaktion" />
+  </wsdl:message>
+  <wsdl:message name="AbbruchTransaktionSoapOut">
+    <wsdl:part name="parameters" element="tns:AbbruchTransaktionResponse" />
+  </wsdl:message>
+  <wsdl:message name="RueckgabeEinmaligSoapIn">
+    <wsdl:part name="parameters" element="tns:RueckgabeEinmalig" />
+  </wsdl:message>
+  <wsdl:message name="RueckgabeEinmaligSoapOut">
+    <wsdl:part name="parameters" element="tns:RueckgabeEinmaligResponse" />
+  </wsdl:message>
+  <wsdl:message name="RueckgabeUnterbrechungenSoapIn">
+    <wsdl:part name="parameters" element="tns:RueckgabeUnterbrechungen" />
+  </wsdl:message>
+  <wsdl:message name="RueckgabeUnterbrechungenSoapOut">
+    <wsdl:part name="parameters" element="tns:RueckgabeUnterbrechungenResponse" />
+  </wsdl:message>
+  <wsdl:portType name="WsVersUnterbrechungenStromSoap">
+    <wsdl:operation name="BeginnTransaktion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Mit dieser Methode starten sie eine Transaktion zur Uebertragung von Versorgungsunterbrechungen Strom. Bei gueltiger Authentifizierung erhalten sie eine Transaktionsnummer (BeginnTranAntwort-Objeckt) als Rueckgabewert. Die Gueltigkeitsdauer dieser Transaktionsnummer betraegt 30 Minuten. Alle weiteren Aufrufe des Webservices mit dieser Transaktionsnummer muessen in diesem Zeitraum erfolgen. Der Parameter 'tranArtBT' ist auf 'EchtDaten' zu setzen. Zum Testen des Webservices kann der Parameter 'tranArtBT' auf die jeweilige Testsequenz sesetzt werden. Bein Testen werden nur Beispieldaten zurueckgegeben.</wsdl:documentation>
+      <wsdl:input message="tns:BeginnTransaktionSoapIn" />
+      <wsdl:output message="tns:BeginnTransaktionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransEinmalig">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Senden der einmaligen Netzdaten zu Versorgungsunterbrechungen Strom</wsdl:documentation>
+      <wsdl:input message="tns:TransEinmaligSoapIn" />
+      <wsdl:output message="tns:TransEinmaligSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="TransUnterbrechungen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Senden der Versorgungsunterbrechungen Strom</wsdl:documentation>
+      <wsdl:input message="tns:TransUnterbrechungenSoapIn" />
+      <wsdl:output message="tns:TransUnterbrechungenSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AbschlussTransaktion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Abschluss der Transaktion zu Versorgungsunterbrechungen Strom</wsdl:documentation>
+      <wsdl:input message="tns:AbschlussTransaktionSoapIn" />
+      <wsdl:output message="tns:AbschlussTransaktionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="ErgebnisVorPruefung">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">24 Stunden nach der erfolgreicher Transaktion kann der Netzbetreiber das Ergebnis der Vorpruefung der Daten abrufen.</wsdl:documentation>
+      <wsdl:input message="tns:ErgebnisVorPruefungSoapIn" />
+      <wsdl:output message="tns:ErgebnisVorPruefungSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="AbbruchTransaktion">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Abbrechen einer Transaktion</wsdl:documentation>
+      <wsdl:input message="tns:AbbruchTransaktionSoapIn" />
+      <wsdl:output message="tns:AbbruchTransaktionSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeEinmalig">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Rueckgabe der einmaligen Netzdaten einer Transaktion (in RueckEinmaligAntwort gekapselt)</wsdl:documentation>
+      <wsdl:input message="tns:RueckgabeEinmaligSoapIn" />
+      <wsdl:output message="tns:RueckgabeEinmaligSoapOut" />
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeUnterbrechungen">
+      <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Rueckgabe eines beliebigen bereits gesendeten Paketes mit Versorgungsunterbrechungen einer Transaktion (in RueckUntbrAntwort gekapselt)</wsdl:documentation>
+      <wsdl:input message="tns:RueckgabeUnterbrechungenSoapIn" />
+      <wsdl:output message="tns:RueckgabeUnterbrechungenSoapOut" />
+    </wsdl:operation>
+  </wsdl:portType>
+  <wsdl:binding name="WsVersUnterbrechungenStromSoap" type="tns:WsVersUnterbrechungenStromSoap">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginnTransaktion">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/BeginnTransaktion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransEinmalig">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/TransEinmalig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransUnterbrechungen">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/TransUnterbrechungen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbschlussTransaktion">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/AbschlussTransaktion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ErgebnisVorPruefung">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/ErgebnisVorPruefung" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbbruchTransaktion">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/AbbruchTransaktion" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeEinmalig">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/RueckgabeEinmalig" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeUnterbrechungen">
+      <soap:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/RueckgabeUnterbrechungen" style="document" />
+      <wsdl:input>
+        <soap:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:binding name="WsVersUnterbrechungenStromSoap12" type="tns:WsVersUnterbrechungenStromSoap">
+    <soap12:binding transport="http://schemas.xmlsoap.org/soap/http" />
+    <wsdl:operation name="BeginnTransaktion">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/BeginnTransaktion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransEinmalig">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/TransEinmalig" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="TransUnterbrechungen">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/TransUnterbrechungen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbschlussTransaktion">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/AbschlussTransaktion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="ErgebnisVorPruefung">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/ErgebnisVorPruefung" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="AbbruchTransaktion">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/AbbruchTransaktion" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeEinmalig">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/RueckgabeEinmalig" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="RueckgabeUnterbrechungen">
+      <soap12:operation soapAction="https://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/RueckgabeUnterbrechungen" style="document" />
+      <wsdl:input>
+        <soap12:body use="literal" />
+      </wsdl:input>
+      <wsdl:output>
+        <soap12:body use="literal" />
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="WsVersUnterbrechungenStrom">
+    <wsdl:documentation xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/">Version 2.0.1.3 vom 15.09.2009</wsdl:documentation>
+    <wsdl:port name="WsVersUnterbrechungenStromSoap" binding="tns:WsVersUnterbrechungenStromSoap">
+      <soap:address location="http://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/WsVersUnterbrechungenStrom.asmx" />
+    </wsdl:port>
+    <wsdl:port name="WsVersUnterbrechungenStromSoap12" binding="tns:WsVersUnterbrechungenStromSoap12">
+      <soap12:address location="http://app.bundesnetzagentur.de/WsVersorgUnterbrStrom/WsVersUnterbrechungenStrom.asmx" />
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>
