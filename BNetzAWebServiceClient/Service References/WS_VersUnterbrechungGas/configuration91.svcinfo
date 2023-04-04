@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<SavedWcfConfigurationInformation xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema" Version="9.1" CheckSum="I5eUDtu/NAjsJFaghKABf+CWcHg=">
+<SavedWcfConfigurationInformation xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" Version="9.1" CheckSum="G7hsTIWfQTp0gdr4S5ytn2Do/gzWPZGdSOATNFRRNbk=">
   <bindingConfigurations>
-    <bindingConfiguration bindingType="basicHttpBinding" name="WS_VersUnterbrechungGasSoap">
+    <bindingConfiguration bindingType="basicHttpBinding" name="WS_VersUnterbrechungGasSoap1">
       <properties>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WS_VersUnterbrechungGasSoap</serializedValue>
+          <serializedValue>WS_VersUnterbrechungGasSoap1</serializedValue>
         </property>
         <property path="/closeTimeout" isComplexType="false" isExplicitlyDefined="true" clrType="System.TimeSpan, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
@@ -112,7 +112,7 @@
     </bindingConfiguration>
   </bindingConfigurations>
   <endpoints>
-    <endpoint name="WS_VersUnterbrechungGasSoap" contract="WS_VersUnterbrechungGas.WS_VersUnterbrechungGasSoap" bindingType="basicHttpBinding" address="http://app.bundesnetzagentur.de/WS_VersorgUnterbrGas/WS_VersUnterbrechungGas.asmx" bindingConfiguration="WS_VersUnterbrechungGasSoap">
+    <endpoint name="WS_VersUnterbrechungGasSoap1" contract="WS_VersUnterbrechungGas.WS_VersUnterbrechungGasSoap" bindingType="basicHttpBinding" address="http://app.bundesnetzagentur.de/WS_VersorgUnterbrGas/WS_VersUnterbrechungGas.asmx" bindingConfiguration="WS_VersUnterbrechungGasSoap1">
       <properties>
         <property path="/address" isComplexType="false" isExplicitlyDefined="true" clrType="System.Uri, System, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>http://app.bundesnetzagentur.de/WS_VersorgUnterbrGas/WS_VersUnterbrechungGas.asmx</serializedValue>
@@ -124,7 +124,7 @@
           <serializedValue>basicHttpBinding</serializedValue>
         </property>
         <property path="/bindingConfiguration" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WS_VersUnterbrechungGasSoap</serializedValue>
+          <serializedValue>WS_VersUnterbrechungGasSoap1</serializedValue>
         </property>
         <property path="/contract" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue>WS_VersUnterbrechungGas.WS_VersUnterbrechungGasSoap</serializedValue>
@@ -187,7 +187,7 @@
           <serializedValue>False</serializedValue>
         </property>
         <property path="/name" isComplexType="false" isExplicitlyDefined="true" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
-          <serializedValue>WS_VersUnterbrechungGasSoap</serializedValue>
+          <serializedValue>WS_VersUnterbrechungGasSoap1</serializedValue>
         </property>
         <property path="/kind" isComplexType="false" isExplicitlyDefined="false" clrType="System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
           <serializedValue />
