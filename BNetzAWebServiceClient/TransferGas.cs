@@ -1,19 +1,17 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
+﻿
 using BNetzAWebServiceClient.WS_VersUnterbrechungGas;
-
+using Domino;
 using log4net;
-using FileHelpers;
+
+using System;
+
+using System.Collections.Generic;
 
 namespace BNetzAWebServiceClient
 {
     class TransferGas
     {
-        private static readonly ILog log = LogManager.GetLogger(typeof(TransferGas));
+        private static readonly log4net.ILog log = LogManager.GetLogger(typeof(TransferGas));
 
         private const string KONTROLLNUMMER = "INKAVZYC";
 
@@ -21,26 +19,99 @@ namespace BNetzAWebServiceClient
         private string transaktionsnummer;
 
         private WS_VersUnterbrechungGasSoapClient service = new WS_VersUnterbrechungGasSoapClient();
-        private List<Unterbrechung> unterbrechungen = new List<Unterbrechung>();
+        private List<WS_VersUnterbrechungGas.Unterbrechung> unterbrechungen = new List<WS_VersUnterbrechungGas.Unterbrechung>();
+        private Domino.NotesDatabase db;
+        private bool test;
 
+        public TransferGas(Domino.NotesDatabase db, bool test)
+        {
+            this.db = db;
+            this.test = test;
+        }
 
         public void EinmaldatenEinlesen()
         {
-            FileHelperEngine engine = new FileHelperEngine(typeof(EinmaldatenGas));
-            engine.Options.IgnoreFirstLines = 1;
-            EinmaldatenGas[] res = engine.ReadFile("einmaldaten-gas.csv") as EinmaldatenGas[];
-            einmaldaten = res[0];
+            NotesView viw = db.GetView("VABNAEinmaldatenGas2022");
+            NotesDocument document = viw.GetFirstDocument();
+            einmaldaten = new EinmaldatenGas();
+            einmaldaten.A_qu_kg1 = Convert.ToDecimal(document.GetItemValue("A_qu_kg1")[0]);
+            einmaldaten.A_qu_kg2 = Convert.ToDecimal(document.GetItemValue("A_qu_kg2")[0]);
+            einmaldaten.AnzahlVUGesamt = Convert.ToDecimal(document.GetItemValue("anzahlVUGesamt")[0]);
+            einmaldaten.Berichtsjahr = Convert.ToInt32(document.GetItemValue("berichtsjahr")[0]);
+            einmaldaten.Bnr = Convert.ToInt32(document.GetItemValue("bnr")[0]);
+            einmaldaten.Leermeldung = Convert.ToBoolean(document.GetItemValue("leermeldung")[0]);
+            einmaldaten.Nnr = Convert.ToInt32(document.GetItemValue("nnr")[0]);
+            einmaldaten.VUG_Ansprech = document.GetItemValue("vug_Ansprech")[0];
+            einmaldaten.VUG_ANZ_LV = Convert.ToInt32(document.GetItemValue("VUG_ANZ_LV")[0]);
+            einmaldaten.VUG_Bericht_Text = document.GetItemValue("vug_Bericht_Text")[0];
+            einmaldaten.VUG_Dopplung = Convert.ToInt32(document.GetItemValue("vug_dopplung")[0]);
+            einmaldaten.VUG_Kommentar_Text = document.GetItemValue("VUG_Kommentar_Text")[0];
+            einmaldaten.VUG_Kontakt = document.GetItemValue("VUG_Kontakt")[0];
+            einmaldaten.VUG_NB_Art = Convert.ToInt32(document.GetItemValue("VUG_NB_Art")[0]);
+            einmaldaten.VUG_SUM_KAP_NACH = Convert.ToInt32(document.GetItemValue("VUG_SUM_KAP_NACH")[0]);
+            einmaldaten.VUG_SUM_KAP_VOR = Convert.ToInt32(document.GetItemValue("VUG_SUM_KAP_VOR")[0]);
+            einmaldaten.VUG_SUM_LST = Convert.ToInt32(document.GetItemValue("VUG_SUM_LST")[0]);
         }
+
+        private UnterbrechungGas GetUnterbrechungFromDoc(NotesDocument doc)
+        {
+            UnterbrechungGas u = new UnterbrechungGas();
+
+            u.stAnlassID = Convert.ToInt32(doc.GetItemValue("fdUnterbrechungsanlassGAS")[0]);
+            u.UnterbrechungsArt = 1;
+            u.vug_ANM = doc.GetItemValue("fdAnmerkungGAS")[0];
+            u.vug_AUSM_EG1 = Convert.ToInt32(doc.GetItemValue("fdAnzUnterbrLetzV")[0]);
+            u.vug_AUSM_EG2 = Convert.ToInt32(doc.GetItemValue("fdAusmassGAS")[0]);
+
+            DateTime dt = doc.GetItemValue("fdErrorStart")[0];
+            dt.AddHours(-1);
+            u.vug_Beginndatum = dt;
+            u.vug_Beginnzeit = dt;
+
+            var start = doc.GetItemValue("fdErrorStart")[0];
+            var ende = doc.GetItemValue("fdErrorEnde")[0];
+            TimeSpan ts = ende - start;
+            u.vug_Dauer = Convert.ToInt32(ts.TotalMinutes);
+
+            u.vug_EG = Convert.ToInt32(doc.GetItemValue("fdErfassungsgruppeGAS")[0]);
+            u.vug_ETSO = "";
+            if (doc.GetItemValue("fdErfassungsgruppeGAS")[0].ToString().Equals("1"))
+            {
+                u.vug_KMIN_EG1 = Convert.ToInt32(doc.GetItemValue("fdKundenminutenGas")[0]);
+            }
+            else
+            {
+                u.vug_KMIN_EG1 = 0;
+            }
+            if (doc.GetItemValue("fdErfassungsgruppeGAS")[0].ToString().Equals("2"))
+            {
+                u.vug_KMIN_EG2 = Convert.ToInt32(doc.GetItemValue("fdKundenminutenGAS")[0]);
+            }
+            else
+            {
+                u.vug_KMIN_EG2 = 0;
+            }
+            u.vug_nb_name = "GEW Wilhelmshaven GmbH";
+            u.vug_NB_betroffen = "";
+
+            return u;
+        }
+
 
         public void UnterbrechungenEinlesen()
         {
-            FileHelperEngine engine = new FileHelperEngine(typeof(UnterbrechungGas));
-            engine.Options.IgnoreFirstLines = 1;
-            UnterbrechungGas[] res = engine.ReadFile("unterbrechungen-gas.csv") as UnterbrechungGas[];
-            foreach (UnterbrechungGas unterbrechung in res)
+            NotesView viw = db.GetView("Statistik\\BNADatenGas2022exp");
+            NotesDocument doc = viw.GetFirstDocument();
+            int lfdNr = 0;
+            while (doc != null)
             {
-                Unterbrechung u = new Unterbrechung();
+                lfdNr++;
+
+                UnterbrechungGas unterbrechung = GetUnterbrechungFromDoc(doc);
+
+                WS_VersUnterbrechungGas.Unterbrechung u = new WS_VersUnterbrechungGas.Unterbrechung();
                 u.LfdNr = unterbrechung.LfdNr;
+
                 switch (unterbrechung.stAnlassID)
                 {
                     case 1:
@@ -78,13 +149,13 @@ namespace BNetzAWebServiceClient
                 switch (unterbrechung.UnterbrechungsArt)
                 {
                     case 1:
-                        u.UnterbrechungsArt = UnterbrechungsArtEnum.Ungeplant;
+                        u.UnterbrechungsArt = WS_VersUnterbrechungGas.UnterbrechungsArtEnum.Ungeplant;
                         break;
                     case 2:
-                        u.UnterbrechungsArt = UnterbrechungsArtEnum.Geplant;
+                        u.UnterbrechungsArt = WS_VersUnterbrechungGas.UnterbrechungsArtEnum.Geplant;
                         break;
                     default:
-                        u.UnterbrechungsArt = UnterbrechungsArtEnum.NichtGesetzt;
+                        u.UnterbrechungsArt = WS_VersUnterbrechungGas.UnterbrechungsArtEnum.NichtGesetzt;
                         break;
                 }
 
@@ -113,13 +184,15 @@ namespace BNetzAWebServiceClient
                 u.vug_nb_name = unterbrechung.vug_nb_name;
 
                 unterbrechungen.Add(u);
+                doc = viw.GetNextDocument(doc);
             }
         }
 
         public string TransaktionBeginnen()
         {
+            WS_VersUnterbrechungGas.TransBeginnArtEnum transBeginnArtEnum = test ? WS_VersUnterbrechungGas.TransBeginnArtEnum.TestAkzeptiert : WS_VersUnterbrechungGas.TransBeginnArtEnum.EchtDaten;
             BeginnTransAntwort tranAntwort = service.BeginnTransaktion(einmaldaten.Bnr, KONTROLLNUMMER, einmaldaten.Nnr, einmaldaten.Berichtsjahr,
-                einmaldaten.Leermeldung, 1, unterbrechungen.Count, unterbrechungen.Count, TransBeginnArtEnum.EchtDaten);
+                einmaldaten.Leermeldung, 1, unterbrechungen.Count, unterbrechungen.Count, transBeginnArtEnum);
 
             transaktionsnummer = tranAntwort.TransNr;
 
@@ -168,7 +241,7 @@ namespace BNetzAWebServiceClient
             log.Info("Antwort: " + tranAntwort.Meldungscode + ": " + tranAntwort.Meldung);
             log.Info("StatusWs: " + tranAntwort.StatusWS.ToString());
 
-            return tranAntwort.StatusWS.Equals(TransStatusEnum.Akzeptiert);
+            return tranAntwort.StatusWS.Equals(WS_VersUnterbrechungGas.TransStatusEnum.Akzeptiert);
         }
 
         public bool UnterbrechungenSenden()
@@ -176,7 +249,7 @@ namespace BNetzAWebServiceClient
             TransUnterbrechungenAntwort tranAntwort = service.TransUnterbrechungen(transaktionsnummer, 1, unterbrechungen.ToArray());
             log.Info("Antwort: " + tranAntwort.Meldungscode + ": " + tranAntwort.Meldung);
             log.Info("StatusWs: " + tranAntwort.StatusWS.ToString());
-            return tranAntwort.StatusWS.Equals(TransStatusEnum.Akzeptiert);
+            return tranAntwort.StatusWS.Equals(WS_VersUnterbrechungGas.TransStatusEnum.Akzeptiert);
         }
 
         public string AntwortVorpruefungHolen(string transnr)
