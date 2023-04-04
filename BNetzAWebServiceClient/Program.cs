@@ -5,6 +5,7 @@ using System;
 using System.IO;
 using System.Net;
 using System.Net.Security;
+using CommandLine;
 
 namespace BNetzAWebServiceClient
 {
@@ -16,6 +17,14 @@ namespace BNetzAWebServiceClient
 
         private const string FILE_NAME_TRANSNR_GAS = "transaktionsnummer-gas.txt";
 
+        public class Options
+        {
+            [Option('a', "antwort", HelpText = "Holt die Antwort der Vorprüfung")]
+            public bool AntwortHolen { get; set; }
+            [Option('t', "type", Required = true, HelpText = "Art des Serviceaufruf (Gas oder Strom = g oder s)")]
+            public string Type { get; set; }
+        }
+
         /// <summary>
         /// Main method
         /// </summary>
@@ -26,105 +35,42 @@ namespace BNetzAWebServiceClient
 
             ServicePointManager.ServerCertificateValidationCallback = new RemoteCertificateValidationCallback(Certificates.ValidateRemoteCertificate);
 
-            try
+            Parser.Default.ParseArguments<Options>(args).WithParsed<Options>(o =>
             {
-                InitializeComandLineParser();
-                ParseArguments(args);
-            }
-            catch (CommandLineArgumentException e)
-            {
-                log.Error(e.Message);
-                PrintUsage();
-                return;
-            }
-            
-            bool antwortHolen = CommandLineArgumentParser.IsSwitchOn("-a");
-            string type = CommandLineArgumentParser.GetParamValue("-type");
-   
-            log.Info("START");
+                log.Info("START");
 
-            switch (type.ToUpper())
-            {
-                case "S":
-                    if (antwortHolen)
-                    {
-                        StromAntwortHolen();
-                    }
-                    else
-                    {
-                        StromDatenSenden();
-                    }
-                    break;
+                switch (o.Type.ToUpper())
+                {
+                    case "S":
+                        if (o.AntwortHolen)
+                        {
+                            StromAntwortHolen();
+                        }
+                        else
+                        {
+                            StromDatenSenden();
+                        }
+                        break;
 
-                case "G":
-                    if (antwortHolen)
-                    {
-                        GasAntwortHolen();
-                    }
-                    else
-                    {
-                        GasDatenSenden();
-                    }
-                    break;
+                    case "G":
+                        if (o.AntwortHolen)
+                        {
+                            GasAntwortHolen();
+                        }
+                        else
+                        {
+                            GasDatenSenden();
+                        }
+                        break;
 
-                default:
-                    PrintUsage();
-                    break;
-            }
+                    default:
+                        break;
+                }
 
-            log.Info("ENDE");
-        }
+                log.Info("ENDE");
+            });
 
-        /// <summary>
-        /// Initialize available command line options
-        /// </summary>
-        private static void InitializeComandLineParser()
-        {
-            //
-            // Define the required parameters.
-            //
-            string[] requiredArguments = { "-type" };
-            CommandLineArgumentParser.DefineRequiredParameters(requiredArguments);
 
-            //
-            // Define the supported switches.
-            //
-            string[] switches = { "-a" };
-            CommandLineArgumentParser.DefineSwitches(switches);
-        }
-
-        /// <summary>
-        /// Parse command line options
-        /// </summary>
-        /// <param name="args">arguments from main method</param>
-        private static void ParseArguments(string[] args)
-        {
-            //
-            // Handle the special case "-help" separately
-            //
-            if (args.Length == 1 && args[0].Trim() == "-help")
-            {
-                PrintUsage();
-            }
-            else
-            {
-                CommandLineArgumentParser.ParseArguments(args);
-            }
-        }
-
-        /// <summary>
-        /// Print usage of command line
-        /// </summary>
-        private static void PrintUsage()
-        {
-            Console.WriteLine();
-            Console.WriteLine("USAGE:");
-            Console.WriteLine("BNetzAWebServiceClient.exe -type <string> [-a]");
-            Console.WriteLine();
-            Console.WriteLine("OPTIONS:");
-            Console.WriteLine("  - type: Art der Übertragung, s für Strom g für Gas");
-            Console.WriteLine("  - a: wenn angegeben werden keine Daten gesendet, nur die Antwort der Prüfung abgeholt");
-            Console.WriteLine();
         }
 
         /// <summary>

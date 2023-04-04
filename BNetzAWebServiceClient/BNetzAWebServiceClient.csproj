@@ -36,6 +36,9 @@
     <Reference Include="Bsc.CommandLineArgumentParser">
       <HintPath>..\..\..\..\..\Downloads\csharpargs-src\csharpargs\bin\Debug\Bsc.CommandLineArgumentParser.dll</HintPath>
     </Reference>
+    <Reference Include="CommandLine, Version=2.9.1.0, Culture=neutral, PublicKeyToken=5a870481e358d379, processorArchitecture=MSIL">
+      <HintPath>..\packages\CommandLineParser.2.9.1\lib\net461\CommandLine.dll</HintPath>
+    </Reference>
     <Reference Include="FileHelpers, Version=3.1.5.0, Culture=neutral, PublicKeyToken=3e0c08d59cc3d657, processorArchitecture=MSIL">
       <HintPath>..\packages\FileHelpers.3.1.5\lib\net45\FileHelpers.dll</HintPath>
       <Private>True</Private>
