@@ -108,6 +108,7 @@ namespace BNetzAWebServiceClient
                 lfdNr++;
 
                 UnterbrechungGas unterbrechung = GetUnterbrechungFromDoc(doc);
+                unterbrechung.LfdNr = lfdNr;
 
                 WS_VersUnterbrechungGas.Unterbrechung u = new WS_VersUnterbrechungGas.Unterbrechung();
                 u.LfdNr = unterbrechung.LfdNr;
