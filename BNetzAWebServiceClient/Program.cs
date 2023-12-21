@@ -140,7 +140,6 @@ namespace BNetzAWebServiceClient
             log.Info("Antwort holfen für Transaktionsnummer: " + transaktionsnummer);
 
             TransferStrom ts = new TransferStrom(db, test);
-            ts.EinmaldatenEinlesen();
             string ret = ts.AntwortVorpruefungHolen(transaktionsnummer);
             log.Info("Ergebnis der Vorprüfung: " + ret);
         }
@@ -190,9 +189,7 @@ namespace BNetzAWebServiceClient
             string transaktionsnummer = file.ReadLine();
             log.Info("Antwort holfen für Transaktionsnummer: " + transaktionsnummer);
 
-            TransferGas tg = new TransferGas(db, test);
-
-            tg.EinmaldatenEinlesen();
+            TransferGas tg = new TransferGas(db, test);            
             string ret = tg.AntwortVorpruefungHolen(transaktionsnummer);
             log.Info("Ergebnis der Vorprüfung: " + ret);
         }
